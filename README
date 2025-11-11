@@ -1,0 +1,125 @@
+# 🚀 Projet Media243 - Plateforme de Streaming
+
+## 🌟 Vision du Projet
+
+**Media243** est une plateforme de streaming vidéo à la demande (**SVOD**) inspirée des modèles **Netflix** et **Jellyfin**, mais avec une identité propre :  
+elle met en avant une **sélection curatée de films, séries et documentaires** centrés sur la **culture, l’histoire et la diaspora de l’Afrique Centrale**.
+
+L’objectif : offrir une expérience fluide, moderne et accessible aussi bien sur le **Web** que sur **Mobile**.
+
+---
+
+## 🛠️ Stack Technique
+
+| Composante | Technologie | Rôle |
+| :--- | :--- | :--- |
+| **Backend (API)** | **Node.js + Express** | Cœur du système : logique métier, authentification, gestion du contenu, endpoints de streaming |
+| **Base de Données** | **PostgreSQL** (ou MongoDB) | Stockage des utilisateurs, des médias et de l’historique de visionnage |
+| **Frontend (Web)** | **React.js** | Interface utilisateur moderne, fluide et réactive |
+| **Mobile (iOS/Android)** | **React Native** | Déploiement mobile natif basé sur le code React |
+| **Métadonnées** | **TMDB API** | Enrichissement automatique du catalogue avec affiches, synopsis, casting |
+
+---
+
+## 🎯 Objectifs du Produit Minimum Viable (MVP)
+
+Le MVP se concentre sur la fonction principale :  
+👉 **trouver et regarder du contenu facilement**.
+
+### 1. Gestion de l’Utilisateur (Backend)
+- Inscription et connexion sécurisées via **JWT**  
+- Profil simple (nom, email)  
+- Endpoint pour gérer les favoris : `/api/user/favorites`
+
+### 2. Catalogue et Découverte
+- Intégration **TMDB API** pour enrichir automatiquement les fiches médias  
+- Page d’accueil listant le contenu principal  
+- Page de détail avec affiche, synopsis et casting  
+- Barre de recherche par titre  
+
+### 3. Lecture Vidéo
+- Lecteur vidéo **HTML5** compatible **HLS/DASH**  
+- Source de streaming test pour la phase MVP  
+- Contrôles de lecture (Play/Pause, Volume, Barre de progression)
+
+---
+
+## 🗺️ Roadmap - Phase 1 (Développement du MVP)
+
+### 🧩 Sprint 1 : Infrastructure & Base de Données
+**Objectif : mettre en place la fondation backend.**
+
+| Tâche | Technologie | Statut |
+| :--- | :--- | :--- |
+| Initialisation du projet Node.js/Express | Node.js/Express | ⏳ À faire |
+| Configuration de la base PostgreSQL/MongoDB | DB | ⏳ À faire |
+| Création des modèles `User` et `Media` | Express/DB | ⏳ À faire |
+| Routes d’authentification (`/register`, `/login`) | Express | ⏳ À faire |
+
+---
+
+### 🎬 Sprint 2 : API Contenu & Intégration TMDB
+**Objectif : rendre le contenu consultable via l’API.**
+
+| Tâche | Technologie | Statut |
+| :--- | :--- | :--- |
+| Endpoints `GET /media` et `GET /media/:id` | Express | ⏳ À faire |
+| Intégration de l’API TMDB pour enrichir les médias | Node.js (Axios/Fetch) | ⏳ À faire |
+| Route pour mise à jour du statut de visionnage | Express/DB | ⏳ À faire |
+
+---
+
+### 💻 Sprint 3 : Interface Utilisateur Web
+**Objectif : première version du front web.**
+
+| Tâche | Technologie | Statut |
+| :--- | :--- | :--- |
+| Initialisation du projet React | React | ⏳ À faire |
+| Création des composants UI (Header, Card, Navigation) | React (JSX/CSS) | ⏳ À faire |
+| Connexion de l’UI à l’API (accueil + détail média) | React (Axios) | ⏳ À faire |
+
+---
+
+### 📱 Sprint 4 : Lecteur Vidéo & Application Mobile
+**Objectif : intégration du player et version mobile.**
+
+| Tâche | Technologie | Statut |
+| :--- | :--- | :--- |
+| Intégration du lecteur vidéo (ex : Video.js) | React/JS | ⏳ À faire |
+| Configuration environnement React Native | React Native | ⏳ À faire |
+| Écrans connexion + accueil mobile | React Native | ⏳ À faire |
+
+---
+
+## 👥 Équipe & Rôles
+
+| Rôle | Responsabilités Principales | Membre |
+| :--- | :--- | :--- |
+| **Architecte Backend** | Architecture API, sécurité, base de données, gestion du streaming | **[Nom de l’ami]** |
+| **Développeur Full Stack / UX** | UI Web & Mobile, intégration API TMDB, expérience utilisateur | **[Ton nom]** |
+
+---
+
+## 📂 Structure du Dépôt (prévisionnelle)
+
+
+---
+
+## 🔒 Sécurité & Bonnes Pratiques
+
+- Authentification par **JWT**
+- Hash des mots de passe avec **bcrypt**
+- Variables d’environnement dans `.env`
+- Contrôle d’accès aux routes (middleware)
+- Vérification des entrées utilisateur (validation côté serveur)
+
+---
+
+## 🌐 Prochaine Étape
+
+➡️ Démarrer le **Sprint 1** :  
+Initialiser le projet **Node.js/Express**, configurer la base PostgreSQL et créer les modèles `User` et `Media`.
+
+---
+
+**Media243** – *Créer une plateforme qui met en lumière la culture d’Afrique Centrale, à travers la technologie et le divertissement.* 🎬✨

@@ -1,0 +1,7 @@
+/* src/styles/App.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Styles spécifiques à App.js ou au body (si vous les avez retirés de index.css) */
