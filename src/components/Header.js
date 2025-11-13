@@ -1,46 +1,49 @@
-// src/components/Header.js
+// src/components/Header.jsx
 import React from 'react';
+import { useAuth } from '../contexts/AuthContext'; // Pour afficher le profil ou le bouton Logout
 import { Link } from 'react-router-dom';
 
 const Header = () => {
-    // Note : Vous pourriez ajouter ici une gestion du scroll pour changer la couleur de fond
-    // comme Netflix le fait (transparent au départ, puis noir en scrollant)
+    const { isAuthenticated, logout } = useAuth();
 
+    // La classe 'fixed top-0 z-50' est essentielle pour l'effet Netflix
     return (
-        <header className="fixed top-0 left-0 w-full z-40 bg-black bg-opacity-70 backdrop-blur-sm p-4 transition duration-300">
-            <div className="flex justify-between items-center max-w-7xl mx-auto">
+        <header className="fixed top-0 z-50 w-full flex items-center justify-between p-6 bg-black/70 transition duration-300">
 
-                {/* Logo Media243 */}
-                <div className="flex items-center space-x-8">
-                    <Link to="/">
-                        <h1 className="text-4xl font-black text-red-600 tracking-wider cursor-pointer">
-                            Media<span className="text-white">243</span>
-                        </h1>
+            {/* Logo et Navigation */}
+            <div className="flex items-center space-x-10">
+                <Link to="/">
+                    <h1 className="text-red-600 text-3xl font-extrabold cursor-pointer">
+                        MEDIA<span className="text-white">243</span>
+                    </h1>
+                </Link>
+                <nav className="hidden lg:flex space-x-6 text-sm">
+                    <Link to="/" className="text-white hover:text-gray-300 transition">Accueil</Link>
+                    <a href="#" className="text-gray-400 hover:text-white transition">Séries</a>
+                    <a href="#" className="text-gray-400 hover:text-white transition">Films</a>
+                    <a href="/DetailPage" className="text-gray-400 hover:text-white transition">Detailles</a>
+                </nav>
+            </div>
+
+            {/* Profil et Actions */}
+            <div className="flex items-center space-x-4">
+                {isAuthenticated ? (
+                    <>
+                        <button className="text-white hover:text-gray-300 transition">
+                            {/*  */}
+
+                        </button>
+                        <button onClick={logout} className="text-sm text-gray-400 hover:text-red-600 transition">
+                            Déconnexion
+                        </button>
+                    </>
+                ) : (
+                    <Link to="/login">
+                        <button className="bg-red-600 text-white px-4 py-2 text-sm font-semibold rounded hover:bg-red-700 transition">
+                            Connexion
+                        </button>
                     </Link>
-
-                    {/* Navigation principale (cachée en mobile) */}
-                    <nav className="hidden md:flex space-x-6 text-sm font-semibold">
-                        <Link to="/" className="text-white hover:text-gray-300 transition duration-150">Accueil</Link>
-                        <Link to="/series" className="text-gray-400 hover:text-gray-200 transition duration-150">Séries</Link>
-                        <Link to="/films" className="text-gray-400 hover:text-gray-200 transition duration-150">Films</Link>
-                        <Link to="/mylist" className="text-gray-400 hover:text-gray-200 transition duration-150">Ma Liste</Link>
-                    </nav>
-                </div>
-
-                {/* Actions secondaires (Recherche et Profil) */}
-                <div className="flex items-center space-x-4">
-                    {/* Icône de recherche (vous aurez besoin d'une librairie d'icônes, ex: react-icons) */}
-                    <button className="text-white hover:text-red-500">
-                        {/* Remplacer par une icône de recherche réelle */}
-
-                    </button>
-
-                    {/* Icône de Profil/Avatar */}
-                    <Link to="/profile" className="w-8 h-8 rounded-md bg-gray-600 hover:ring-2 hover:ring-red-500 transition duration-150 flex items-center justify-center text-xs font-bold">
-                        P
-                    </Link>
-                </div>
-
+                )}
             </div>
         </header>
     );

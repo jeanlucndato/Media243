@@ -1,10 +1,10 @@
-// src/pages/HomePage.js
+// src/pages/HomePage.jsx
 import React from 'react';
 import Header from '../components/Header';
 import Row from '../components/Row';
 import Footer from '../components/Footer';
 
-// Données de mock
+// MOCK: Données
 const mockMedia = [
     { id: 1, title: "L'Héritage du 243", poster_url: 'https://via.placeholder.com/300x450/B82329/FFFFFF?text=Film+1', rating: '9.2', year: '2024' },
     { id: 2, title: "Kinshasa Nights", poster_url: 'https://via.placeholder.com/300x450/404040/FFFFFF?text=Film+2', rating: '8.5', year: '2023' },
@@ -14,36 +14,66 @@ const mockMedia = [
 ];
 
 const HomePage = () => {
+    // Utiliser les données du contexte si elles sont disponibles
+    const heroMedia = {
+        title: "Le Cœur de l'Afrique",
+        description: "Plongez dans un drame historique captivant sur les rives du lac Kivu. Un Media243 Original à ne pas manquer.",
+        backgroundImage: "url('https://via.placeholder.com/1920x800/1C1C1C/FFFFFF?text=Bannière+Principale')",
+    };
+
+    // Pour l'exemple sans MediaContext
+    const categories = [
+        { title: "🔥 Tendance Media243 Actuellement", mediaList: mockMedia },
+        { title: "🎬 Nouveautés Africaines", mediaList: mockMedia.slice(2) },
+    ];
+
     return (
-        <div className="bg-black text-white min-h-screen">
-            {/* Header */}
+        // Conteneur principal flexible pour pousser le Footer vers le bas
+        <div className="bg-black text-white min-h-screen flex flex-col">
             <Header />
 
             {/* Bannière principale */}
             <section
-                className="relative h-[70vh] bg-cover bg-center flex items-end p-10"
-                style={{ backgroundImage: "url('https://via.placeholder.com/1920x800/222222/FFFFFF?text=Bannière+Principale')" }}
+                // Hauteur responsive: 80vh sur mobile, 90vh sur desktop
+                className="relative h-[80vh] md:h-[90vh] w-full bg-cover bg-center flex items-end p-6 md:p-12"
+                style={{ backgroundImage: heroMedia.backgroundImage }}
             >
-                <div className="bg-gradient-to-t from-black to-transparent w-full p-6 md:p-10 rounded-lg">
-                    <h1 className="text-4xl md:text-6xl font-bold mb-4">Media243 Originals</h1>
-                    <p className="max-w-xl text-gray-300 mb-6">
-                        Découvrez les films et séries africains les plus populaires sur Media243. Action, drame, documentaire et bien plus !
+                {/* Gradient pour l'effet d'ombre */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+
+                <div className="relative z-10 max-w-2xl">
+                    {/* Taille du titre responsive */}
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 drop-shadow-lg">
+                        {heroMedia.title}
+                    </h1>
+                    {/* Texte de description responsive */}
+                    <p className="max-w-lg text-gray-200 text-sm md:text-xl mb-6 drop-shadow-md">
+                        {heroMedia.description}
                     </p>
                     <div className="flex space-x-4">
-                        <button className="bg-white text-black px-6 py-2 font-semibold rounded hover:bg-gray-200 transition">Regarder</button>
-                        <button className="bg-gray-700 text-white px-6 py-2 font-semibold rounded hover:bg-gray-600 transition">Ma liste</button>
+                        <button className="flex items-center bg-white text-black px-4 py-2 md:px-6 md:py-3 font-bold text-base md:text-lg rounded-lg hover:bg-gray-200 transition duration-300">
+                            ▶️ Regarder
+                        </button>
+                        <button className="hidden sm:flex items-center bg-gray-700/70 text-white px-4 py-2 md:px-6 md:py-3 font-semibold text-base md:text-lg rounded-lg hover:bg-gray-600/90 transition duration-300">
+                            ⓘ Plus d'infos
+                        </button>
                     </div>
                 </div>
             </section>
 
-            {/* Lignes de contenu */}
-            <main className="relative -mt-20 space-y-8 px-6 md:px-12">
-                <Row title="🔥 Tendance Media243 Actuellement" mediaList={mockMedia} />
-                <Row title="🎬 Nouveautés Africaines" mediaList={mockMedia} />
-                <Row title="📽️ Documentaires RDC" mediaList={mockMedia.slice(1)} />
+            {/* Lignes de contenu : flex-grow pour l'espace restant */}
+            <main className="relative -mt-32 space-y-12 pb-20 flex-grow">
+                {
+                    categories.map((category, index) => (
+                        <Row
+                            key={index}
+                            title={category.title}
+                            mediaList={category.mediaList}
+                        />
+                    ))
+                }
             </main>
 
-            {/* Footer */}
             <Footer />
         </div>
     );
