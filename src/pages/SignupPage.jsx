@@ -1,101 +1,90 @@
-// src/pages/SignupPage.jsx
 import React, { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+// Correction: Tentative d'importer sans l'extension pour une meilleure compatibilité de l'environnement.
+import useMedia243Api from '../hooks/useMedia243Api';
 
 const SignupPage = () => {
-    // ... (Logique inchangée) ...
-    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const { signup } = useAuth();
+
     const navigate = useNavigate();
+    // Le hook dépend du fichier useMedia243Api.jsx que vous devez avoir créé
+    const { loading, error: apiError, signup } = useMedia243Api();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
-        if (password.length < 6) {
-            return setError("Le mot de passe doit contenir au moins 6 caractères.");
-        }
+
         try {
-            await signup(name, email, password);
-            navigate('/');
+            const response = await signup({ email, password });
+
+            console.log('Inscription réussie. Utilisateur créé:', response.userId);
+
+            // Rediriger l'utilisateur vers la page de connexion après une inscription réussie
+            navigate('/login');
+
         } catch (err) {
-            setError(err.message || 'Une erreur est survenue lors de l\'inscription.');
+            console.error('Échec de l\'inscription.');
         }
     };
 
     return (
-        // RENDER: min-h-screen sur tout l'écran
-        <div className="min-h-screen bg-black flex items-center justify-center p-4 md:p-8">
+        <div className="relative min-h-screen flex items-center justify-center bg-gray-900 overflow-hidden">
+            {/* Image de fond */}
+            <div
+                className="absolute inset-0 bg-cover bg-center opacity-30"
+                style={{ backgroundImage: "url('https://assets.nflxext.com/ffe/siteui/vlv3/d1532433-07b1-4e39-9be2-e23c215729af/82d90708-306c-482a-a53d-d039fdd05476/FR-fr-20231120-popsignuptwoweeks-perspective_alpha_website_large.jpg')" }}
+            ></div>
 
-            <form
-                onSubmit={handleSubmit}
-                className="
-                    bg-gray-900/90 
-                    p-6 md:p-12 // Moins de padding sur mobile, plus sur desktop
-                    rounded-lg shadow-2xl 
-                    w-full max-w-sm md:max-w-md // Taille max ajustée
-                    mx-auto
-                "
-            >
-                <h2 className="text-white text-3xl font-bold mb-6 md:mb-8">
-                    Créer votre compte media243
-                </h2>
+            {/* Contenu du formulaire */}
+            <div className="relative z-10 bg-black bg-opacity-75 p-16 rounded-lg shadow-xl w-full max-w-md">
+                <h1 className="text-white text-3xl font-bold mb-8">S'inscrire</h1>
 
-                {error && (
-                    <p className="text-red-600 mb-4 p-3 bg-red-900/20 rounded text-sm">
-                        {error}
-                    </p>
+                {/* Affichage de l'erreur du hook */}
+                {apiError && (
+                    <div className="bg-red-700 text-white p-3 rounded mb-4 text-sm">
+                        {apiError}
+                    </div>
                 )}
 
-                {/* Champs de formulaire */}
-                <input
-                    type="text"
-                    placeholder="Nom complet"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    className="w-full p-4 mb-4 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 text-base"
-                />
-                <input
-                    type="email"
-                    placeholder="Adresse e-mail"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="w-full p-4 mb-4 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 text-base"
-                />
-                <input
-                    type="password"
-                    placeholder="Mot de passe (6 caractères min.)"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="w-full p-4 mb-6 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 text-base"
-                />
-
-                {/* Bouton S'inscrire */}
-                <button
-                    type="submit"
-                    className="w-full p-4 mb-4 bg-red-600 hover:bg-red-700 text-white font-bold text-lg rounded-md transition"
-                >
-                    S'inscrire
-                </button>
-
-                {/* Lien de Connexion */}
-                <p className="text-gray-400 text-sm mt-4 text-center">
-                    Déjà membre ?
-                    <a
-                        href="/login"
-                        className="text-white hover:underline ml-1 font-semibold"
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-6">
+                        <input
+                            type="email"
+                            placeholder="Adresse e-mail"
+                            className="w-full p-4 rounded bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="mb-6">
+                        <input
+                            type="password"
+                            placeholder="Créer un mot de passe"
+                            className="w-full p-4 rounded bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    {/* Le bouton est désactivé pendant le chargement */}
+                    <button
+                        type="submit"
+                        className="w-full bg-red-600 text-white font-bold py-3 rounded hover:bg-red-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-800 disabled:opacity-50"
+                        disabled={loading}
                     >
-                        Connectez-vous ici
-                    </a>
-                </p>
+                        {loading ? 'Inscription en cours...' : 'S\'inscrire'}
+                    </button>
+                </form>
 
-            </form>
+                <div className="mt-8 text-gray-500 text-sm">
+                    Déjà membre ?{' '}
+                    <Link to="/login" className="text-white hover:underline">
+                        Connectez-vous ici
+                    </Link>
+                    .
+                </div>
+            </div>
         </div>
     );
 };
