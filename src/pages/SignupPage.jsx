@@ -1,31 +1,39 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-// Correction: Tentative d'importer sans l'extension pour une meilleure compatibilité de l'environnement.
+// Assurez-vous que le chemin est correct selon l'arborescence de votre projet
 import useMedia243Api from '../hooks/useMedia243Api';
 
 const SignupPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const navigate = useNavigate();
-    // Le hook dépend du fichier useMedia243Api.jsx que vous devez avoir créé
+
+    // Utilisation du hook qui gère la logique API
     const { loading, error: apiError, signup } = useMedia243Api();
+
+    // Un état local pour capturer l'erreur si elle n'est pas gérée par le hook (e.g. erreur inattendue)
+    const [localError, setLocalError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLocalError(''); // Réinitialiser l'erreur locale
 
         try {
-            const response = await signup({ email, password });
+            await signup({ email, password });
 
-            console.log('Inscription réussie. Utilisateur créé:', response.userId);
-
-            // Rediriger l'utilisateur vers la page de connexion après une inscription réussie
+            // L'inscription réussit, on redirige vers la connexion
+            console.log('Inscription réussie. Redirection vers la page de connexion.');
             navigate('/login');
 
         } catch (err) {
-            console.error('Échec de l\'inscription.');
+            // Le hook useMedia243Api met déjà à jour apiError, mais on peut ajouter un message de fallback ici
+            if (!apiError) {
+                setLocalError('Échec de l\'inscription. Veuillez réessayer.');
+            }
         }
     };
+
+    const displayError = apiError || localError;
 
     return (
         <div className="relative min-h-screen flex items-center justify-center bg-gray-900 overflow-hidden">
@@ -39,10 +47,10 @@ const SignupPage = () => {
             <div className="relative z-10 bg-black bg-opacity-75 p-16 rounded-lg shadow-xl w-full max-w-md">
                 <h1 className="text-white text-3xl font-bold mb-8">S'inscrire</h1>
 
-                {/* Affichage de l'erreur du hook */}
-                {apiError && (
+                {/* Affichage de l'erreur */}
+                {displayError && (
                     <div className="bg-red-700 text-white p-3 rounded mb-4 text-sm">
-                        {apiError}
+                        {displayError}
                     </div>
                 )}
 

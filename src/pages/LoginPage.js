@@ -1,38 +1,46 @@
-// src/pages/LoginPage.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Pour faire les appels API
+import axios from 'axios';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate(); // Pour rediriger après la connexion
+    const navigate = useNavigate();
 
-    const API_BASE_URL = 'http://localhost:5000/api'; // <--- ASSUREZ-VOUS QUE C'EST L'URL DE VOTRE BACKEND EXPRESS !
+    // 🔑 CORRECTION 1: L'URL doit pointer vers l'instance Next.js (port 3000 par défaut)
+    // et vers le point de terminaison de l'API: /api/auth
+    // ASSUREZ-VOUS QUE 3000 EST LE PORT SUR LEQUEL TOURNE VOTRE NEXT.JS.
+    const API_URL = 'http://localhost:3000/api/auth';
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Empêche le rechargement de la page
-
-        setError(''); // Réinitialise les erreurs
+        e.preventDefault();
+        setError('');
 
         try {
-            // Appel à l'API de connexion de votre backend Express
-            const response = await axios.post(`${API_BASE_URL}/login`, {
+            // 🔑 CORRECTION 2: Nous faisons un appel POST à /api/auth 
+            // et incluons l'action 'login' dans le corps (body) de la requête.
+            const response = await axios.post(API_URL, {
+                action: 'login', // L'action attendue par votre pages/api/auth.js
                 email,
                 password,
             });
 
-            // Si la connexion réussit
+            // Si la connexion réussit (status 200)
             console.log('Connexion réussie:', response.data);
-            // Stockez le token JWT (si votre backend en renvoie un)
+
+            // Stockez le token de session simulé de votre API Next.js
             localStorage.setItem('token', response.data.token);
-            // Redirigez l'utilisateur vers la page d'accueil
+
+            // Redirigez l'utilisateur
             navigate('/');
 
         } catch (err) {
-            console.error('Erreur de connexion:', err.response ? err.response.data : err.message);
-            setError(err.response?.data?.message || 'Email ou mot de passe incorrect.');
+            console.error('Erreur de connexion:', err);
+
+            // L'API auth.js renvoie l'erreur dans err.response.data.message
+            const errorMessage = err.response?.data?.message || 'Une erreur inattendue est survenue lors de la connexion.';
+            setError(errorMessage);
         }
     };
 
@@ -90,7 +98,6 @@ const LoginPage = () => {
                     </Link>
                     .
                 </div>
-                {/* Vous pouvez ajouter une option "Se souvenir de moi" et "Besoin d'aide ?" */}
             </div>
         </div>
     );

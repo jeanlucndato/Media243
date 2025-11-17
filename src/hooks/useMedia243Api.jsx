@@ -1,100 +1,67 @@
 import { useState, useCallback } from 'react';
 import axios from 'axios';
 
-// URL de base de votre backend Express
-// NOTE: Cette URL doit pointer vers votre serveur (ex: 'http://localhost:5000/api')
-const API_BASE_URL = 'http://localhost:5000/api';
+// 🔑 L'URL de votre API Next.js (doit être le même que dans LoginPage.js)
+// ASSUREZ-VOUS QUE 3000 EST LE PORT DE VOTRE BACKEND NEXT.JS !
+const API_AUTH_URL = 'http://localhost:3000/api/auth';
 
+/**
+ * Hook personnalisé pour gérer l'authentification (Inscription/Connexion)
+ * vers l'API Next.js /api/auth.
+ * * Note: Dans un environnement de production, vous utiliseriez des variables d'environnement 
+ * pour stocker l'URL (ex: process.env.REACT_APP_API_URL).
+ */
 const useMedia243Api = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token')); // Vérifie si un token existe au démarrage
 
-    // Fonction de déconnexion pour la gestion des erreurs 401
-    const logout = useCallback(() => {
-        localStorage.removeItem('token');
-        setIsAuthenticated(false);
-    }, []);
-
-    // Fonction générique pour effectuer les requêtes API
-    const apiRequest = useCallback(async (method, endpoint, data = null, needsAuth = true) => {
+    // Fonction d'inscription (Signup)
+    const signup = useCallback(async ({ email, password }) => {
         setLoading(true);
         setError(null);
 
-        const token = localStorage.getItem('token');
-        const headers = {};
-
-        if (needsAuth && token) {
-            headers['Authorization'] = `Bearer ${token}`;
-        }
-
         try {
-            const url = `${API_BASE_URL}${endpoint}`;
+            // L'API Next.js /api/auth attend un objet 'action'
+            const payload = {
+                action: 'signup', // Clé critique pour l'inscription
+                email,
+                password,
+            };
 
-            let response;
-            switch (method.toLowerCase()) {
-                case 'get':
-                    // Ajout de 'axios' si manquant
-                    if (typeof axios === 'undefined') {
-                        throw new Error("La bibliothèque 'axios' n'est pas disponible. Assurez-vous qu'elle est chargée.");
-                    }
-                    response = await axios.get(url, { headers, params: data });
-                    break;
-                case 'post':
-                    response = await axios.post(url, data, { headers });
-                    break;
-                default:
-                    throw new Error(`Méthode HTTP non supportée: ${method}`);
-            }
+            const response = await axios.post(API_AUTH_URL, payload);
 
             setLoading(false);
-            return response.data;
+            // Stocker le token immédiatement après l'inscription (facultatif, mais utile)
+            if (response.data.token) {
+                localStorage.setItem('token', response.data.token);
+            }
+
+            return {
+                message: response.data.message,
+                userId: response.data.user.id,
+            };
+
         } catch (err) {
             setLoading(false);
-            const errorMessage = err.response?.data?.message || err.message || 'Erreur de communication avec le serveur.';
+
+            // Tente d'extraire le message d'erreur spécifique de l'API Next.js
+            const errorMessage = err.response?.data?.message || 'Erreur réseau ou service indisponible.';
             setError(errorMessage);
 
-            if (err.response?.status === 401) {
-                logout();
-            }
-
+            console.error('Erreur dans le hook signup:', err);
+            // Renvoyer l'erreur pour que le composant appelant (SignupPage) puisse la gérer si besoin
             throw new Error(errorMessage);
         }
-    }, [logout]);
+    }, []);
 
-    // --- Fonctions d'authentification ---
-
-    const signup = useCallback(async ({ email, password }) => {
-        const result = await apiRequest('POST', '/signup', { email, password }, false);
-        return result;
-    }, [apiRequest]);
-
-    const login = useCallback(async ({ email, password }) => {
-        const result = await apiRequest('POST', '/login', { email, password }, false);
-
-        if (result.token) {
-            localStorage.setItem('token', result.token);
-            setIsAuthenticated(true);
-        }
-        return result;
-    }, [apiRequest]);
-
-    // --- Fonction pour obtenir les films ---
-
-    const getMovies = useCallback(async () => {
-        const result = await apiRequest('GET', '/movies', null, false);
-        return result;
-    }, [apiRequest]);
-
+    // Vous pouvez ajouter la fonction 'login' ici aussi pour un hook complet
+    // const login = useCallback(async ({ email, password }) => { ... }, []);
 
     return {
         loading,
         error,
-        isAuthenticated,
         signup,
-        login,
-        logout,
-        getMovies,
+        // login, // Pourrait être exposé ici également
     };
 };
 
