@@ -3,14 +3,23 @@ import React from 'react';
 import Header from '../components/Header';
 import Row from '../components/Row';
 import Footer from '../components/Footer';
+// importe les images
+import img from '../assets/images/C2.jpg';
+import img2 from '../assets/images/HYDRAQ.png';
+import img3 from '../assets/images/LOCKBIT.jpg';
+import img4 from '../assets/images/SNORT.jpg';
+import img5 from '../assets/images/jean.png';
+
+// main banner image
+import mainbanner from '../assets/images/3bac8de1-0934-45de-9ff3-f0e8fb0e5931.jpg';
 
 // MOCK: Données
 const mockMedia = [
-    { id: 1, title: "L'Héritage du 243", poster_url: 'https://via.placeholder.com/300x450/B82329/FFFFFF?text=Film+1', rating: '9.2', year: '2024' },
-    { id: 2, title: "Kinshasa Nights", poster_url: 'https://via.placeholder.com/300x450/404040/FFFFFF?text=Film+2', rating: '8.5', year: '2023' },
-    { id: 3, title: "La Nuit du Congo", poster_url: 'https://via.placeholder.com/300x450/222222/FFFFFF?text=Film+3', rating: '8.8', year: '2022' },
-    { id: 4, title: "RDC Stories", poster_url: 'https://via.placeholder.com/300x450/555555/FFFFFF?text=Film+4', rating: '7.9', year: '2021' },
-    { id: 5, title: "Saga de Goma", poster_url: 'https://via.placeholder.com/300x450/888888/FFFFFF?text=Film+5', rating: '8.1', year: '2023' },
+    { id: 1, title: "L'Héritage du 243", poster_url: img, rating: '9.2', year: '2024' },
+    { id: 2, title: "Kinshasa Nights", poster_url: img2, rating: '8.5', year: '2023' },
+    { id: 3, title: "La Nuit du Congo", poster_url: img3, rating: '8.8', year: '2022' },
+    { id: 4, title: "RDC Stories", poster_url: img4, rating: '7.9', year: '2021' },
+    { id: 5, title: "Saga de Goma", poster_url: img5, rating: '8.1', year: '2023' },
 ];
 
 const HomePage = () => {
@@ -18,7 +27,7 @@ const HomePage = () => {
     const heroMedia = {
         title: "Le Cœur de l'Afrique",
         description: "Plongez dans un drame historique captivant sur les rives du lac Kivu. Un Media243 Original à ne pas manquer.",
-        backgroundImage: "url('https://via.placeholder.com/1920x800/1C1C1C/FFFFFF?text=Bannière+Principale')",
+        backgroundImage: `url(${mainbanner})`,
     };
 
     // Pour l'exemple sans MediaContext
