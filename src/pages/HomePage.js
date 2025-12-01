@@ -11,7 +11,7 @@ import img4 from '../assets/images/SNORT.jpg';
 import img5 from '../assets/images/jean.png';
 
 // main banner image
-import mainbanner from '../assets/images/3bac8de1-0934-45de-9ff3-f0e8fb0e5931.jpg';
+import mainbanner from '../assets/images/mainbanner.png';
 
 // MOCK: Données
 const mockMedia = [
