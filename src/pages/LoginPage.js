@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+// import de l'images
+import bgImage from '../assets/images/mainbanner.png';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -49,7 +51,7 @@ const LoginPage = () => {
             {/* Image de fond (peut être remplacée par une image réelle ou un dégradé) */}
             <div
                 className="absolute inset-0 bg-cover bg-center opacity-30"
-                style={{ backgroundImage: "url('https://assets.nflxext.com/ffe/siteui/vlv3/d1532433-07b1-4e39-9be2-e23c215729af/82d90708-306c-482a-a53d-d039fdd05476/FR-fr-20231120-popsignuptwoweeks-perspective_alpha_website_large.jpg')" }}
+                style={{ backgroundImage: `url(${bgImage})` }}
             ></div>
 
             {/* Contenu du formulaire */}

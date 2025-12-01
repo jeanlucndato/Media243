@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+// import de l'images
+import bgImage from '../assets/images/mainbanner.png';
 // Assurez-vous que le chemin est correct selon l'arborescence de votre projet
 import useMedia243Api from '../hooks/useMedia243Api';
 
@@ -40,7 +42,7 @@ const SignupPage = () => {
             {/* Image de fond */}
             <div
                 className="absolute inset-0 bg-cover bg-center opacity-30"
-                style={{ backgroundImage: "url('https://assets.nflxext.com/ffe/siteui/vlv3/d1532433-07b1-4e39-9be2-e23c215729af/82d90708-306c-482a-a53d-d039fdd05476/FR-fr-20231120-popsignuptwoweeks-perspective_alpha_website_large.jpg')" }}
+                style={{ backgroundImage: `url(${bgImage})` }}
             ></div>
 
             {/* Contenu du formulaire */}

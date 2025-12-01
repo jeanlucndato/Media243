@@ -1,70 +1,105 @@
-# Getting Started with Create React App
+# 🌍 MEDIA243 — La Révolution du Streaming Made in RDC
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Media243 Banner](./src/assets/images/mainbanner.png)
 
-## Available Scripts
+Bienvenue dans **Media243**, la première plateforme de streaming conçue pour mettre en valeur le talent, la culture et l’excellence audiovisuelle de la République Démocratique du Congo.
 
-In the project directory, you can run:
+Films, séries, musique, documentaires… Tout votre divertissement, réuni dans une expérience fluide, moderne et 100% locale.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 💎 Pourquoi Media243 ?
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Parce que l’Afrique centrale mérite une plateforme de streaming qui lui ressemble :
 
-### `npm test`
+- **Accessible**, même avec une connexion limitée
+- **Culturellement riche**, avec un catalogue local fort
+- **Moderne**, inspiré des standards Netflix & Spotify
+- **Sécurisé** et optimisé grâce à des technologies mondialement reconnues
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Media243, c’est **le pont entre la technologie de demain et la créativité congolaise d’aujourd’hui.**
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🎬 Une Expérience de Streaming Pensée pour Vous
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 🎥 Films & Séries
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Retrouvez le meilleur du cinéma congolais et international : blockbusters, productions locales, séries exclusives.
 
-### `npm run eject`
+### 🎧 Musique & Podcasts
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Plongez dans un univers audio riche : artistes congolais, playlists thématiques, interviews, podcasts exclusifs.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 🎞️ Documentaires
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Un regard unique sur la culture, l’histoire, les innovations et les réalités africaines.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 🚀 Une Plateforme Moderne, Efficace & Intelligente
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- 🔎 **Recherche intelligente** pour trouver vos contenus en un instant
+- 🧠 **Recommandations personnalisées** basées sur votre style
+- ⚡ **Lecture optimisée** même sur des réseaux faibles (3G / 4G rural)
+- 🌑 **UI immersive façon Netflix**
+- 🔐 **Sécurité avancée** : JWT, OAuth, chiffrement des données
+- 📱 **Disponible sur tous les appareils**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Votre divertissement, sans limites.
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🏗️ Une Technologie de Classe Mondiale
 
-### Analyzing the Bundle Size
+### Frontend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Next.js
+- ReactJS
+- TailwindCSS
 
-### Making a Progressive Web App
+### Backend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Node.js (Express / NestJS)
+- MongoDB ou PostgreSQL
+- Cloudflare R2 / AWS S3 pour le stockage
 
-### Advanced Configuration
+### DevOps
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- Docker & CI/CD
+- Déploiements optimisés (Vercel, AWS, Render)
 
-### Deployment
+Une architecture pensée pour la **performance**, la **scalabilité** et la **sécurité**.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## 🎯 Notre Vision
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Créer l’écosystème numérique le plus puissant d’Afrique centrale en offrant :
+
+- Une vitrine internationale au contenu congolais
+- Une plateforme respectueuse des artistes et créateurs
+- Une technologie robuste, adaptée aux réalités locales
+- Une expérience utilisateur premium
+
+Media243 n’est pas seulement une plateforme…  
+**C’est un mouvement.**
+
+---
+
+## 🤝 Rejoignez l’Aventure
+
+Vous êtes développeur, créateur, artiste, producteur ou investisseur ?  
+Media243 est ouvert aux collaborations pour écrire l’avenir du streaming en Afrique.
+
+👉 _Créez, partagez, inspirez… Nous nous occupons du reste._
+
+---
+
+## 📬 Contact
+
+**Media243 Team**  
+📩 contact@media243.cd  
+🌐 Plateforme disponible très bientôt
+
+---
