@@ -5,33 +5,34 @@ import HomePage from './pages/HomePage';
 import DetailPage from './pages/DetailPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
-import ProtectedRoute from './components/ProtectedRoute'; // <-- NOUVEAU
-import { AuthProvider } from './contexts/AuthContext'; // <-- NOUVEAU
+// Le ProtectedRoute est toujours là, mais on ne l'utilise plus pour les pages de design
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './contexts/AuthContext';
 import './App.css';
 
 function App() {
   return (
-    // 1. Envelopper toute l'application avec le AuthProvider
     <AuthProvider>
       <Router>
         <div className="App">
           <Routes>
 
-            {/* ROUTES PUBLIQUES (accessibles à tous) */}
+            {/* ROUTES PUBLIQUES (Accessibles à tous pour le design) */}
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
 
-            {/* 2. ROUTE PROTÉGÉE */}
-            {/* On crée un 'groupe' de routes qui nécessitent d'être connecté */}
+            {/* 💡 CORRECTION : DETAILPAGE EST MAINTENANT PUBLIQUE POUR FACILITER LE DÉVELOPPEMENT */}
+            <Route path="/media/:id" element={<DetailPage />} />
+
+            {/* ROUTE PROTÉGÉE (Laisser ici pour la future logique) */}
+            {/* Vous pouvez ajouter ici la route vers le profil, etc., une fois que l'API est connectée. */}
             <Route element={<ProtectedRoute />}>
-
-              {/* Le contenu de la plateforme est maintenant sécurisé par ProtectedRoute */}
-              <Route path="/media/:id" element={<DetailPage />} />
-              {/* Ajoutez ici toutes les routes nécessitant une connexion (WatchPage, Profil, etc.) */}
-
+              {/* Exemple : <Route path="/profile" element={<ProfilePage />} /> */}
             </Route>
 
+            {/* Route 404 de secours */}
+            <Route path="*" element={<div>404 Page non trouvée</div>} />
           </Routes>
         </div>
       </Router>

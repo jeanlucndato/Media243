@@ -1,5 +1,7 @@
 // src/pages/HomePage.jsx
 import React from 'react';
+// 💡 Importez le hook useNavigate pour la navigation
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Row from '../components/Row';
 import Footer from '../components/Footer';
@@ -22,9 +24,17 @@ const mockMedia = [
     { id: 5, title: "Saga de Goma", poster_url: img5, rating: '8.1', year: '2023' },
 ];
 
+// --- Définition d'un Média spécifique pour la bannière (POUR LA NAVIGATION) ---
+// Vous devriez obtenir l'ID du média principal via une API, mais pour l'instant, on utilise l'ID 1
+const HERO_MEDIA_ID = 1;
+
 const HomePage = () => {
+    // 💡 INITIALISATION du hook de navigation
+    const navigate = useNavigate();
+
     // Utiliser les données du contexte si elles sont disponibles
     const heroMedia = {
+        id: HERO_MEDIA_ID, // Ajouter l'ID pour la redirection
         title: "Le Cœur de l'Afrique",
         description: "Plongez dans un drame historique captivant sur les rives du lac Kivu. Un Media243 Original à ne pas manquer.",
         backgroundImage: `url(${mainbanner})`,
@@ -35,6 +45,21 @@ const HomePage = () => {
         { title: "🔥 Tendance Media243 Actuellement", mediaList: mockMedia },
         { title: "🎬 Nouveautés Africaines", mediaList: mockMedia.slice(2) },
     ];
+
+    // 💡 Fonction de navigation vers la page de détails
+    const handleMoreInfoClick = () => {
+        // Redirige vers la route protégée : /media/:id
+        navigate(`/media/${heroMedia.id}`);
+    };
+
+    // 💡 Fonction pour simuler la lecture (redirige vers une page de lecture si elle existe)
+    const handleWatchClick = () => {
+        // Pour l'instant, on redirige vers les détails, ou vers une future page de lecture /watch/:id
+        console.log("Démarrer la lecture du média : ", heroMedia.id);
+        // navigate(`/watch/${heroMedia.id}`); 
+        navigate(`/media/${heroMedia.id}`); // On redirige vers les détails pour cet exemple
+    };
+
 
     return (
         // Conteneur principal flexible pour pousser le Footer vers le bas
@@ -60,10 +85,16 @@ const HomePage = () => {
                         {heroMedia.description}
                     </p>
                     <div className="flex space-x-4">
-                        <button className="flex items-center bg-white text-black px-4 py-2 md:px-6 md:py-3 font-bold text-base md:text-lg rounded-lg hover:bg-gray-200 transition duration-300">
+                        {/* 💡 BOUTON "REGARDER" : Appelle la fonction de lecture */}
+                        <button
+                            onClick={handleWatchClick}
+                            className="flex items-center bg-white text-black px-4 py-2 md:px-6 md:py-3 font-bold text-base md:text-lg rounded-lg hover:bg-gray-200 transition duration-300">
                             ▶️ Regarder
                         </button>
-                        <button className="hidden sm:flex items-center bg-gray-700/70 text-white px-4 py-2 md:px-6 md:py-3 font-semibold text-base md:text-lg rounded-lg hover:bg-gray-600/90 transition duration-300">
+                        {/* 💡 BOUTON "PLUS D'INFOS" : Appelle la fonction de redirection */}
+                        <button
+                            onClick={handleMoreInfoClick}
+                            className="hidden sm:flex items-center bg-gray-700/70 text-white px-4 py-2 md:px-6 md:py-3 font-semibold text-base md:text-lg rounded-lg hover:bg-gray-600/90 transition duration-300">
                             ⓘ Plus d'infos
                         </button>
                     </div>
@@ -77,6 +108,7 @@ const HomePage = () => {
                         <Row
                             key={index}
                             title={category.title}
+                            // 💡 Prochaine étape : Passer le navigate à Row ou implémenter la navigation dans Row
                             mediaList={category.mediaList}
                         />
                     ))

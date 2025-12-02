@@ -1,44 +1,57 @@
-// src/components/Row.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import MediaCard from './MediaCard';
 
 const Row = ({ title, mediaList }) => {
+  if (!mediaList || mediaList.length === 0) {
+    return null;
+  }
+
   return (
-    <div className="pt-8">
-      <h2 className="text-xl md:text-2xl font-semibold mb-4 ml-4 md:ml-12">{title}</h2>
+    // Conteneur de la ligne : Ajout d'une marge supérieure plus prononcée pour séparer les lignes
+    // et retrait de la marge intérieure latérale du Row lui-même.
+    <div className="mb-12">
 
-      {/* Conteneur du défilement horizontal */}
-      <div className="flex space-x-2 sm:space-x-4 overflow-x-scroll scrollbar-hide p-4 pl-4 md:pl-12">
+      {/* 1. TITRE DE LA CATÉGORIE - Plus de style et d'espace */}
+      <h2 className="text-3xl md:text-4xl font-extrabold mb-5 text-white 
+                       pl-6 md:pl-12 lg:pl-20 
+                       hover:text-red-500 transition duration-300 cursor-pointer">
+        {title}
+      </h2>
 
-        {mediaList.map((media) => (
-          <Link to={`/media/${media.id}`} key={media.id}>
-            <div
-              className="relative 
-                                min-w-[120px] h-[180px] // Mobile (Taille de base)
-                                sm:min-w-[150px] sm:h-[225px] // Tablette
-                                md:min-w-[180px] md:h-[270px] // Desktop
-                                lg:min-w-[250px] lg:h-[375px] // Grand Desktop
-                                cursor-pointer transition duration-200 transform hover:scale-105 hover:shadow-lg rounded-lg overflow-hidden"
-            >
+      {/* 2. CONTENEUR DE DÉFILEMENT - Scrollbar masquée et ombres de transition */}
+      <div className="relative">
 
-              {/* Affiche du média */}
-              <img
-                src={media.poster_url}
-                alt={media.title}
-                className="w-full h-full object-cover"
-              />
+        {/* 💡 Masque Dégradé Gauche : Crée un effet de "bordure" invisible à gauche */}
+        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-r from-black via-black/90 to-transparent z-10 pointer-events-none"></div>
 
-              {/* Info Hover (taille de texte responsive) */}
-              <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-40 transition flex flex-col justify-end p-2">
-                <p className="text-xs sm:text-sm font-bold opacity-0 hover:opacity-100">{media.title}</p>
-                <p className="text-2xs sm:text-xs text-yellow-400 opacity-0 hover:opacity-100">⭐️ {media.rating}</p>
-              </div>
-            </div>
-          </Link>
-        ))}
+        {/* Contenu défilant */}
+        <div
+          className="flex space-x-4 overflow-x-scroll scrollbar-hide py-4 
+                               pl-6 md:pl-12 lg:pl-20 pr-6 md:pr-12 lg:pr-20"
+        >
+          {mediaList.map((media) => (
+            // Le MediaCard gère déjà son propre style "attirant" (hover:scale-105)
+            <MediaCard key={media.id} media={media} />
+          ))}
+        </div>
+
+        {/* 💡 Masque Dégradé Droit : Crée un effet de "plus à voir" à droite */}
+        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-l from-black via-black/90 to-transparent z-10 pointer-events-none"></div>
+
       </div>
     </div>
   );
 };
 
 export default Row;
+// NOTE : La classe 'scrollbar-hide' nécessite un peu de CSS personnalisé :
+/*
+// Dans votre fichier CSS global (e.g., App.css ou index.css)
+.scrollbar-hide::-webkit-scrollbar {
+    display: none; // Pour Chrome, Safari, Opera
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;  // Pour IE et Edge
+    scrollbar-width: none;  // Pour Firefox
+}
+*/
