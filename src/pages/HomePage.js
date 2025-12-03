@@ -8,29 +8,24 @@ import Footer from '../components/Footer';
 // importe les images
 import mainbanner from '../assets/images/mainbanner.png';
 
-import { mockMedia } from '../data/mockData';
+import { useMedia } from '../contexts/MediaContext';
 
-// --- Définition d'un Média spécifique pour la bannière (POUR LA NAVIGATION) ---
-// Vous devriez obtenir l'ID du média principal via une API, mais pour l'instant, on utilise l'ID 1
 const HERO_MEDIA_ID = 1;
 
 const HomePage = () => {
     // 💡 INITIALISATION du hook de navigation
     const navigate = useNavigate();
 
-    // Utiliser les données du contexte si elles sont disponibles
-    const heroMedia = {
-        id: HERO_MEDIA_ID, // Ajouter l'ID pour la redirection
-        title: "Le Cœur de l'Afrique",
-        description: "Plongez dans un drame historique captivant sur les rives du lac Kivu. Un Media243 Original à ne pas manquer.",
+    // Utiliser les données du contexte
+    const { categories, heroMedia: contextHeroMedia, loading, error } = useMedia();
+
+    // Utiliser le média du contexte s'il est chargé, sinon fallback (ou null)
+    const heroMedia = contextHeroMedia || {
+        id: HERO_MEDIA_ID,
+        title: "Chargement...",
+        description: "Veuillez patienter pendant le chargement du contenu.",
         backgroundImage: `url(${mainbanner})`,
     };
-
-    // Pour l'exemple sans MediaContext
-    const categories = [
-        { title: "🔥 Tendance Media243 Actuellement", mediaList: mockMedia },
-        { title: "🎬 Nouveautés Africaines", mediaList: mockMedia.slice(2) },
-    ];
 
     // 💡 Fonction de navigation vers la page de détails
     const handleMoreInfoClick = () => {
@@ -46,6 +41,28 @@ const HomePage = () => {
         navigate(`/media/${heroMedia.id}`); // On redirige vers les détails pour cet exemple
     };
 
+    if (loading) {
+        return (
+            <div className="bg-black text-white min-h-screen flex items-center justify-center">
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-red-600"></div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="bg-black text-white min-h-screen flex items-center justify-center flex-col">
+                <h1 className="text-2xl font-bold mb-4">Une erreur est survenue</h1>
+                <p className="text-gray-400">{error}</p>
+                <button
+                    onClick={() => window.location.reload()}
+                    className="mt-4 bg-red-600 px-6 py-2 rounded hover:bg-red-700"
+                >
+                    Réessayer
+                </button>
+            </div>
+        );
+    }
 
     return (
         // Conteneur principal flexible pour pousser le Footer vers le bas
