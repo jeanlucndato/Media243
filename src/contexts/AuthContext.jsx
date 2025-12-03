@@ -5,7 +5,7 @@ import axios from 'axios';
 const AuthContext = createContext();
 
 // URL de base de votre API Backend
-const API_URL = 'https://votre-backend.com/api/auth';
+const API_URL = (process.env.REACT_APP_API_URL || 'http://localhost:3000/api') + '/auth';
 
 // 2. Créer le Provider (le gardien de l'état)
 export const AuthProvider = ({ children }) => {

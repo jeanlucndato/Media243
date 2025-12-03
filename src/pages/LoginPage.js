@@ -14,7 +14,7 @@ const LoginPage = () => {
     // 🔑 CORRECTION 1: L'URL doit pointer vers l'instance Next.js (port 3000 par défaut)
     // et vers le point de terminaison de l'API: /api/auth
     // ASSUREZ-VOUS QUE 3000 EST LE PORT SUR LEQUEL TOURNE VOTRE NEXT.JS.
-    const API_URL = 'http://localhost:3000/api/auth';
+    const API_URL = (process.env.REACT_APP_API_URL || 'http://localhost:3000/api') + '/auth';
 
     const handleSubmit = async (e) => {
         e.preventDefault();

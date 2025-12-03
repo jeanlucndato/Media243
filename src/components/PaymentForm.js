@@ -10,7 +10,8 @@ const PaymentForm = ({ amount, videoId }) => {
     const handleSubmit = async () => {
         setStatus('PENDING');
         try {
-            const response = await axios.post('https://votre-backend.com/api/initiate-payment', {
+            const API_URL = (process.env.REACT_APP_API_URL || 'http://localhost:3000/api');
+            const response = await axios.post(`${API_URL}/initiate-payment`, {
                 amount,
                 phoneNumber,
                 operator,

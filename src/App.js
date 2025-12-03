@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import DetailPage from './pages/DetailPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import SearchPage from './pages/SearchPage';
 // Le ProtectedRoute est toujours là, mais on ne l'utilise plus pour les pages de design
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
@@ -21,6 +22,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/search" element={<SearchPage />} />
 
             {/* 💡 CORRECTION : DETAILPAGE EST MAINTENANT PUBLIQUE POUR FACILITER LE DÉVELOPPEMENT */}
             <Route path="/media/:id" element={<DetailPage />} />

@@ -1,57 +1,62 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import MediaCard from './MediaCard';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const Row = ({ title, mediaList }) => {
+  const rowRef = useRef(null);
+  const [isMoved, setIsMoved] = useState(false);
+
+  const handleClick = (direction) => {
+    setIsMoved(true);
+    if (rowRef.current) {
+      const { scrollLeft, clientWidth } = rowRef.current;
+      const scrollTo =
+        direction === 'left'
+          ? scrollLeft - clientWidth
+          : scrollLeft + clientWidth;
+
+      rowRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
+
   if (!mediaList || mediaList.length === 0) {
     return null;
   }
 
   return (
-    // Conteneur de la ligne : Ajout d'une marge supérieure plus prononcée pour séparer les lignes
-    // et retrait de la marge intérieure latérale du Row lui-même.
-    <div className="mb-12">
-
-      {/* 1. TITRE DE LA CATÉGORIE - Plus de style et d'espace */}
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-5 text-white 
-                       pl-6 md:pl-12 lg:pl-20 
-                       hover:text-red-500 transition duration-300 cursor-pointer">
+    <div className="space-y-0.5 md:space-y-2 mb-8 px-4 md:px-12 group">
+      <h2 className="w-56 cursor-pointer text-sm font-semibold text-[#e5e5e5] transition duration-200 hover:text-white md:text-2xl mb-4">
         {title}
       </h2>
 
-      {/* 2. CONTENEUR DE DÉFILEMENT - Scrollbar masquée et ombres de transition */}
-      <div className="relative">
+      <div className="relative md:-ml-2">
+        <FaChevronLeft
+          className={`absolute top-0 bottom-0 left-2 z-40 m-auto h-9 w-9 cursor-pointer opacity-0 transition hover:scale-125 group-hover:opacity-100 ${!isMoved && 'hidden'
+            }`}
+          onClick={() => handleClick('left')}
+        />
 
-        {/* 💡 Masque Dégradé Gauche : Crée un effet de "bordure" invisible à gauche */}
-        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-r from-black via-black/90 to-transparent z-10 pointer-events-none"></div>
-
-        {/* Contenu défilant */}
+        {/* 
+            Added 'py-8' and negative margin to allow cards to scale vertically without clipping 
+            while keeping the layout tight. 
+            'overflow-y-visible' is tricky with 'overflow-x-scroll', so we use padding.
+        */}
         <div
-          className="flex space-x-4 overflow-x-scroll scrollbar-hide py-4 
-                               pl-6 md:pl-12 lg:pl-20 pr-6 md:pr-12 lg:pr-20"
+          ref={rowRef}
+          className="flex items-center space-x-0.5 overflow-x-scroll scrollbar-hide md:space-x-2.5 md:p-2 py-10 -my-10"
         >
           {mediaList.map((media) => (
-            // Le MediaCard gère déjà son propre style "attirant" (hover:scale-105)
             <MediaCard key={media.id} media={media} />
           ))}
         </div>
 
-        {/* 💡 Masque Dégradé Droit : Crée un effet de "plus à voir" à droite */}
-        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-l from-black via-black/90 to-transparent z-10 pointer-events-none"></div>
-
+        <FaChevronRight
+          className="absolute top-0 bottom-0 right-2 z-40 m-auto h-9 w-9 cursor-pointer opacity-0 transition hover:scale-125 group-hover:opacity-100"
+          onClick={() => handleClick('right')}
+        />
       </div>
     </div>
   );
 };
 
 export default Row;
-// NOTE : La classe 'scrollbar-hide' nécessite un peu de CSS personnalisé :
-/*
-// Dans votre fichier CSS global (e.g., App.css ou index.css)
-.scrollbar-hide::-webkit-scrollbar {
-    display: none; // Pour Chrome, Safari, Opera
-}
-.scrollbar-hide {
-    -ms-overflow-style: none;  // Pour IE et Edge
-    scrollbar-width: none;  // Pour Firefox
-}
-*/

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // 🔑 L'URL de votre API Next.js (doit être le même que dans LoginPage.js)
 // ASSUREZ-VOUS QUE 3000 EST LE PORT DE VOTRE BACKEND NEXT.JS !
-const API_AUTH_URL = 'http://localhost:3000/api/auth';
+const API_AUTH_URL = (process.env.REACT_APP_API_URL || 'http://localhost:3000/api') + '/auth';
 
 /**
  * Hook personnalisé pour gérer l'authentification (Inscription/Connexion)

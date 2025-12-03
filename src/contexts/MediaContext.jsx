@@ -5,11 +5,11 @@ import axios from 'axios';
 const MediaContext = createContext();
 
 // URL de base de votre API Backend
-const API_URL = 'https://votre-backend.com/api/media';
+// Note: Les endpoints sont /movies et /categories, donc on pointe vers /api
+const API_URL = (process.env.REACT_APP_API_URL || 'http://localhost:3000/api');
 
-// --- MOCK : Données Similaires à l'API ---
+// --- MOCK : Données Similaires à l'API (Fallback) ---
 const mockMediaData = {
-    // Les listes de carrousels pour la page d'accueil
     categories: [
         {
             title: "🔥 Tendance Media243", endpoint: '/trending', mediaList: [
@@ -24,7 +24,6 @@ const mockMediaData = {
             ]
         },
     ],
-    // Le média en bannière
     heroMedia: {
         id: 1,
         title: "Le Cœur de l'Afrique",
@@ -32,8 +31,6 @@ const mockMediaData = {
         backgroundImage: "url('https://via.placeholder.com/1920x800/1C1C1C/FFFFFF?text=Bannière+Principale')",
     },
 };
-// --- FIN MOCK ---
-
 
 // 2. Créer le Provider
 export const MediaProvider = ({ children }) => {
@@ -47,19 +44,73 @@ export const MediaProvider = ({ children }) => {
         setLoading(true);
         setError(null);
         try {
-            // REMPLACER par votre appel API réel :
-            // const response = await axios.get(`${API_URL}/homepage`); 
-            // setCategories(response.data.categories);
-            // setHeroMedia(response.data.heroMedia);
+            // 1. Récupérer les films et les catégories en parallèle
+            const [moviesRes, categoriesRes] = await Promise.all([
+                axios.get(`${API_URL}/movies`),
+                axios.get(`${API_URL}/categories`)
+            ]);
 
-            // UTILISATION DU MOCK pour le développement
-            await new Promise(resolve => setTimeout(resolve, 800));
-            setCategories(mockMediaData.categories);
-            setHeroMedia(mockMediaData.heroMedia);
+            const movies = moviesRes.data.data || [];
+            const categoriesList = categoriesRes.data.data || [];
+
+            // 2. Organiser les films par catégorie (Genre)
+            const organizedCategories = categoriesList.map(cat => {
+                const catMovies = movies.filter(m => m.genre === cat.name || m.genre === cat.slug);
+                // Si aucun film ne correspond exactement, on peut chercher par inclusion ou autre logique
+
+                return {
+                    title: cat.name,
+                    endpoint: `/category/${cat.slug}`,
+                    mediaList: catMovies.map(m => ({
+                        id: m.id,
+                        title: m.title,
+                        poster_url: m.posterUrl || 'https://via.placeholder.com/300x450/222222/FFFFFF?text=' + encodeURIComponent(m.title), // Fallback
+                        rating: m.rating || 'N/A',
+                        description: m.description || '',
+                        videoUrl: m.videoUrl || '',
+                        ...m
+                    }))
+                };
+            }).filter(cat => cat.mediaList.length > 0);
+
+            // Ajouter une catégorie "Tout le catalogue" si on a des films mais qu'ils ne rentrent pas tous dans les catégories
+            // Ou simplement pour avoir une liste complète
+            if (movies.length > 0) {
+                organizedCategories.unshift({
+                    title: "🔥 Tout le catalogue",
+                    endpoint: '/all',
+                    mediaList: movies.map(m => ({
+                        id: m.id,
+                        title: m.title,
+                        poster_url: m.posterUrl || 'https://via.placeholder.com/300x450/B82329/FFFFFF?text=' + encodeURIComponent(m.title),
+                        rating: m.rating || 'N/A',
+                        description: m.description || '',
+                        videoUrl: m.videoUrl || '',
+                        ...m
+                    }))
+                });
+            }
+
+            setCategories(organizedCategories);
+
+            // 3. Définir le Hero Media
+            if (movies.length > 0) {
+                const randomMovie = movies[Math.floor(Math.random() * movies.length)];
+                setHeroMedia({
+                    id: randomMovie.id,
+                    title: randomMovie.title,
+                    description: randomMovie.description || `Découvrez ${randomMovie.title}, disponible maintenant.`,
+                    backgroundImage: randomMovie.backdropUrl ? `url('${randomMovie.backdropUrl}')` : "url('https://via.placeholder.com/1920x800/1C1C1C/FFFFFF?text=Media243')",
+                });
+            } else {
+                setHeroMedia(mockMediaData.heroMedia);
+            }
 
         } catch (err) {
-            setError('Impossible de charger les données. Veuillez réessayer.');
-            console.error(err);
+            console.error("Erreur lors du chargement des données:", err);
+            // Fallback sur les données mock en cas d'erreur
+            setCategories(mockMediaData.categories);
+            setHeroMedia(mockMediaData.heroMedia);
         } finally {
             setLoading(false);
         }
@@ -67,30 +118,31 @@ export const MediaProvider = ({ children }) => {
 
     // Fonction pour récupérer les détails d'un seul média
     const getMediaDetails = async (mediaId) => {
-        // Dans une vraie application, vous mettez en cache les détails ici.
         try {
-            // REMPLACER par votre appel API réel :
-            // const response = await axios.get(`${API_URL}/details/${mediaId}`); 
+            // D'abord chercher dans les données déjà chargées
+            for (const cat of categories) {
+                const found = cat.mediaList.find(m => m.id === mediaId || m.id === parseInt(mediaId));
+                if (found) return found;
+            }
+
+            // Si pas trouvé, essayer de fetcher (si l'endpoint existe)
+            // const response = await axios.get(`${API_URL}/movies/${mediaId}`);
             // return response.data;
 
-            // UTILISATION D'UN MOCK pour le développement
+            // Sinon fallback mock
             await new Promise(resolve => setTimeout(resolve, 300));
-
-            // Simuler la récupération de données détaillées
             return {
                 id: mediaId,
                 title: `Détail du Média ID ${mediaId}`,
-                description: "Ceci est une description détaillée...",
+                description: "Description non disponible.",
                 videoUrl: 'https://votre-cdn.com/videos/test-ep1.m3u8',
                 posterUrl: 'https://via.placeholder.com/1280x720/1A1A1A/FFFFFF?text=Détail+Banner',
-                // Ajoutez toutes les métadonnées ici
             };
 
         } catch (err) {
             throw new Error("Erreur lors de la récupération des détails.");
         }
     };
-
 
     useEffect(() => {
         fetchAllMediaData();
@@ -102,7 +154,7 @@ export const MediaProvider = ({ children }) => {
         loading,
         error,
         getMediaDetails,
-        refetchMedia: fetchAllMediaData, // Pour recharger les données si nécessaire
+        refetchMedia: fetchAllMediaData,
     };
 
     return (

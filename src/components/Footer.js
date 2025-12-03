@@ -1,58 +1,45 @@
 import React from "react";
-// Assurez-vous d'avoir les imports pour les icônes si vous les utilisez (FaFacebook, etc.)
+import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     const links = [
-        "Centre d'aide", "Cartes Cadeaux", "Relations Investisseurs", "Conditions d'utilisation",
-        "Confidentialité", "Préférences de cookies", "Mentions légales", "Nous contacter",
-        "Compte", "Vitesse du test",
+        "Audiodescription", "Centre d'aide", "Cartes cadeaux", "Presse",
+        "Relations Investisseurs", "Recrutement", "Conditions d'utilisation", "Confidentialité",
+        "Informations légales", "Préférences de cookies", "Mentions légales", "Nous contacter",
     ];
 
     return (
-        // Remplacement de px-4 par px-3 sur mobile pour minimiser l'espace perdu
-        <footer className="bg-black text-gray-400 py-8 px-3 sm:px-10 md:px-20 border-t border-gray-800 mt-12">
-            <div className="max-w-6xl mx-auto">
-
-                {/* Section Réseaux Sociaux */}
-                {/* Justification centrée par défaut, seulement 'md:justify-start' pour desktop */}
-                <div className="flex space-x-6 mb-6 justify-center md:justify-start text-base">
-                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition duration-200">
-                        FB
-                    </a>
-                    {/* ... (Inclure ici les autres liens sociaux comme IG, TW, YT) ... */}
+        <footer className="w-full bg-netflix-black text-[#757575] py-16 px-4 md:px-16 lg:px-32 border-t border-gray-800/50 mt-auto font-light">
+            <div className="max-w-5xl mx-auto">
+                {/* Social Icons */}
+                <div className="flex space-x-6 mb-8 text-white">
+                    <FaFacebookF className="h-6 w-6 cursor-pointer hover:text-gray-400 transition duration-300" />
+                    <FaInstagram className="h-6 w-6 cursor-pointer hover:text-gray-400 transition duration-300" />
+                    <FaTwitter className="h-6 w-6 cursor-pointer hover:text-gray-400 transition duration-300" />
+                    <FaYoutube className="h-6 w-6 cursor-pointer hover:text-gray-400 transition duration-300" />
                 </div>
 
-                {/* Grille des Liens */}
-                {/* text-xs par défaut (très petit) et gap-x-2 (espace horizontal minimal) */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 
-                            gap-y-3 gap-x-2 // Gap minimal pour les mobiles
-                            text-[10px] sm:text-xs md:text-sm // Taille de texte très petite
-                            mb-6 text-center md:text-left"
-                >
+                {/* Links Grid */}
+                <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-y-3 gap-x-4 text-sm mb-8">
                     {links.map((link, index) => (
-                        <a
-                            key={index}
-                            href="#"
-                            className="hover:underline hover:text-white transition duration-200"
-                        >
+                        <li key={index} className="hover:underline cursor-pointer transition duration-200">
                             {link}
-                        </a>
+                        </li>
                     ))}
-                </div>
+                </ul>
 
-                {/* Bouton de Langue */}
-                <div className="flex justify-center md:justify-start mb-4">
-                    <button className="border border-gray-600 px-3 py-1 text-xs hover:border-white rounded transition duration-200">
-                        Français
+                {/* Service Code Button */}
+                <div className="mb-6">
+                    <button className="border border-[#757575] px-4 py-1 text-sm hover:text-white hover:border-white transition duration-300">
+                        Code de service
                     </button>
                 </div>
 
                 {/* Copyright */}
-                {/* Texte le plus petit pour le copyright */}
-                <p className="text-[10px] text-center md:text-left mt-4">
-                    © {currentYear} Media243. Tous droits réservés. | Conçu pour la diaspora.
+                <p className="text-xs">
+                    © 1997-{currentYear} Media243, Inc.
                 </p>
             </div>
         </footer>

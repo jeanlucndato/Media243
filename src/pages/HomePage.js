@@ -6,23 +6,9 @@ import Header from '../components/Header';
 import Row from '../components/Row';
 import Footer from '../components/Footer';
 // importe les images
-import img from '../assets/images/C2.jpg';
-import img2 from '../assets/images/HYDRAQ.png';
-import img3 from '../assets/images/LOCKBIT.jpg';
-import img4 from '../assets/images/SNORT.jpg';
-import img5 from '../assets/images/jean.png';
-
-// main banner image
 import mainbanner from '../assets/images/mainbanner.png';
 
-// MOCK: Données
-const mockMedia = [
-    { id: 1, title: "L'Héritage du 243", poster_url: img, rating: '9.2', year: '2024' },
-    { id: 2, title: "Kinshasa Nights", poster_url: img2, rating: '8.5', year: '2023' },
-    { id: 3, title: "La Nuit du Congo", poster_url: img3, rating: '8.8', year: '2022' },
-    { id: 4, title: "RDC Stories", poster_url: img4, rating: '7.9', year: '2021' },
-    { id: 5, title: "Saga de Goma", poster_url: img5, rating: '8.1', year: '2023' },
-];
+import { mockMedia } from '../data/mockData';
 
 // --- Définition d'un Média spécifique pour la bannière (POUR LA NAVIGATION) ---
 // Vous devriez obtenir l'ID du média principal via une API, mais pour l'instant, on utilise l'ID 1
@@ -68,41 +54,59 @@ const HomePage = () => {
 
             {/* Bannière principale */}
             <section
-                // Hauteur responsive: 80vh sur mobile, 90vh sur desktop
-                className="relative h-[80vh] md:h-[90vh] w-full bg-cover bg-center flex items-end p-6 md:p-12"
-                style={{ backgroundImage: heroMedia.backgroundImage }}
+                className="relative h-[65vh] md:h-[85vh] lg:h-[95vh] w-full bg-cover bg-center flex items-center md:items-end pb-12 md:pb-24 pl-4 md:pl-12"
+                style={{
+                    backgroundImage: heroMedia.backgroundImage,
+                    backgroundPosition: "center top"
+                }}
             >
-                {/* Gradient pour l'effet d'ombre */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+                {/* Gradient Overlay - Top to Bottom & Left to Right */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-netflix-black"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent"></div>
 
-                <div className="relative z-10 max-w-2xl">
-                    {/* Taille du titre responsive */}
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 drop-shadow-lg">
+                <div className="relative z-10 max-w-2xl pt-20 md:pt-0 animate-fade-in">
+                    {/* Titre */}
+                    <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-4 drop-shadow-xl text-white tracking-tight">
                         {heroMedia.title}
                     </h1>
-                    {/* Texte de description responsive */}
-                    <p className="max-w-lg text-gray-200 text-sm md:text-xl mb-6 drop-shadow-md">
+
+                    {/* Meta Info (Optional - can be added later) */}
+                    <div className="flex items-center space-x-4 mb-4 text-gray-300 text-sm md:text-base font-medium">
+                        <span className="text-green-400 font-bold">98% Match</span>
+                        <span>2024</span>
+                        <span className="border border-gray-500 px-1 text-xs">16+</span>
+                        <span>2h 15m</span>
+                    </div>
+
+                    {/* Description */}
+                    <p className="max-w-lg text-white text-base md:text-lg lg:text-xl mb-8 drop-shadow-md font-normal leading-relaxed text-shadow-md">
                         {heroMedia.description}
                     </p>
+
+                    {/* Boutons */}
                     <div className="flex space-x-4">
-                        {/* 💡 BOUTON "REGARDER" : Appelle la fonction de lecture */}
                         <button
                             onClick={handleWatchClick}
-                            className="flex items-center bg-white text-black px-4 py-2 md:px-6 md:py-3 font-bold text-base md:text-lg rounded-lg hover:bg-gray-200 transition duration-300">
-                            ▶️ Regarder
+                            className="flex items-center bg-white text-black px-6 py-2 md:px-8 md:py-3 font-bold text-lg rounded hover:bg-white/80 transition duration-300 gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 md:h-8 md:w-8" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                            </svg>
+                            Lecture
                         </button>
-                        {/* 💡 BOUTON "PLUS D'INFOS" : Appelle la fonction de redirection */}
                         <button
                             onClick={handleMoreInfoClick}
-                            className="hidden sm:flex items-center bg-gray-700/70 text-white px-4 py-2 md:px-6 md:py-3 font-semibold text-base md:text-lg rounded-lg hover:bg-gray-600/90 transition duration-300">
-                            ⓘ Plus d'infos
+                            className="flex items-center bg-gray-500/70 text-white px-6 py-2 md:px-8 md:py-3 font-bold text-lg rounded hover:bg-gray-500/50 transition duration-300 gap-2 backdrop-blur-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 md:h-8 md:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Plus d'infos
                         </button>
                     </div>
                 </div>
             </section>
 
             {/* Lignes de contenu : flex-grow pour l'espace restant */}
-            <main className="relative -mt-32 space-y-12 pb-20 flex-grow">
+            <main className="relative -mt-32 space-y-12 pb-20 flex-grow z-20">
                 {
                     categories.map((category, index) => (
                         <Row
