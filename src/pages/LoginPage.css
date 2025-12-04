@@ -1,0 +1,112 @@
+/* LoginPage Styles */
+
+.login-page {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--gray-900);
+    overflow: hidden;
+}
+
+.login-page__background {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
+}
+
+.login-page__form-container {
+    position: relative;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 4rem;
+    border-radius: var(--rounded-lg);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    max-width: 28rem;
+}
+
+.login-page__title {
+    color: white;
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    margin-bottom: 2rem;
+}
+
+.login-page__error {
+    background-color: var(--red-700);
+    color: white;
+    padding: 0.75rem;
+    border-radius: var(--rounded);
+    margin-bottom: var(--spacing-4);
+    font-size: var(--text-sm);
+}
+
+.login-page__form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-page__input-group {
+    margin-bottom: 1.5rem;
+}
+
+.login-page__input {
+    width: 100%;
+    padding: 1rem;
+    border-radius: var(--rounded);
+    background-color: var(--gray-700);
+    color: white;
+    border: none;
+    outline: none;
+}
+
+.login-page__input::placeholder {
+    color: var(--gray-400);
+}
+
+.login-page__input:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.5);
+}
+
+.login-page__submit-btn {
+    width: 100%;
+    background-color: var(--red-600);
+    color: white;
+    font-weight: var(--font-bold);
+    padding: 0.75rem;
+    border-radius: var(--rounded);
+    border: none;
+    cursor: pointer;
+    transition: background-color 200ms;
+}
+
+.login-page__submit-btn:hover {
+    background-color: var(--red-700);
+}
+
+.login-page__submit-btn:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.5);
+}
+
+.login-page__footer {
+    margin-top: 2rem;
+    color: var(--gray-500);
+    font-size: var(--text-sm);
+}
+
+.login-page__footer-link {
+    color: white;
+    text-decoration: none;
+}
+
+.login-page__footer-link:hover {
+    text-decoration: underline;
+}

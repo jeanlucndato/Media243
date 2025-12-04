@@ -1,0 +1,99 @@
+/* Footer Component Styles */
+
+.footer {
+    width: 100%;
+    background-color: var(--netflix-black);
+    color: #757575;
+    padding: 4rem 1rem;
+    border-top: 1px solid rgba(31, 41, 55, 0.5);
+    margin-top: auto;
+    font-weight: var(--font-light);
+}
+
+.footer__container {
+    max-width: 64rem;
+    margin: 0 auto;
+}
+
+.footer__social {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+.footer__social-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    transition: color 300ms;
+}
+
+.footer__social-icon:hover {
+    color: var(--gray-400);
+}
+
+.footer__links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 1rem;
+    font-size: var(--text-sm);
+    margin-bottom: 2rem;
+    list-style: none;
+    padding: 0;
+}
+
+.footer__link {
+    cursor: pointer;
+    transition: text-decoration 200ms;
+}
+
+.footer__link:hover {
+    text-decoration: underline;
+}
+
+.footer__service-code {
+    margin-bottom: 1.5rem;
+}
+
+.footer__service-btn {
+    border: 1px solid #757575;
+    background: transparent;
+    color: #757575;
+    padding: 0.25rem 1rem;
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: all 300ms;
+}
+
+.footer__service-btn:hover {
+    color: white;
+    border-color: white;
+}
+
+.footer__copyright {
+    font-size: var(--text-xs);
+}
+
+/* Responsive Styles */
+@media (min-width: 640px) {
+    .footer__links {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 768px) {
+    .footer {
+        padding: 4rem 4rem;
+    }
+
+    .footer__links {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .footer {
+        padding: 4rem 8rem;
+    }
+}

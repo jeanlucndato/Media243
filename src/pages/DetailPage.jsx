@@ -4,13 +4,12 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import VideoPlayer from '../components/VideoPlayer';
 import { useAuth } from '../contexts/AuthContext';
-import { FaPlay, FaStar, FaInfoCircle, FaCalendarAlt, FaClock } from 'react-icons/fa'; // Ajout de nouvelles icônes
+import { FaPlay, FaStar, FaInfoCircle, FaCalendarAlt, FaClock } from 'react-icons/fa';
 import { MdOutlinePeopleAlt, MdOutlineLocalMovies } from 'react-icons/md';
+import './DetailPage.css';
 
-// --- MOCK : Fonction de récupération des données par ID (LOCAL) ---
-// (Le mock reste inchangé pour le fonctionnement)
+// Mock function for fetching media details
 const fetchMediaDetails = async (mediaId) => {
-    // Simuler un appel API et le temps de chargement
     await new Promise(resolve => setTimeout(resolve, 500));
 
     return {
@@ -24,7 +23,7 @@ const fetchMediaDetails = async (mediaId) => {
         releaseYear: 2024,
         actors: "Acteur 1, Acteur 2, Acteur 3",
         videoUrl: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
-        posterUrl: 'https://via.placeholder.com/1920x1080/1A1A1A/FFFFFF?text=Détail+Banner', // 16:9 ratio, meilleure pour les bannières
+        posterUrl: 'https://via.placeholder.com/1920x1080/1A1A1A/FFFFFF?text=Détail+Banner',
         isSeries: true,
         seasons: [
             {
@@ -38,7 +37,6 @@ const fetchMediaDetails = async (mediaId) => {
     };
 };
 
-// --- Composant Principal ---
 const DetailPage = () => {
     const { id } = useParams();
     const { user, isAuthenticated } = useAuth();
@@ -50,7 +48,6 @@ const DetailPage = () => {
 
     const hasActiveSubscription = isAuthenticated && user?.subscription === 'premium';
 
-    // ... LOGIQUE DE RÉCUPÉRATION DES DONNÉES (inchangée) ...
     useEffect(() => {
         const loadMedia = async () => {
             setLoading(true);
@@ -72,11 +69,11 @@ const DetailPage = () => {
     }, [id]);
 
     if (loading) {
-        return <div className="min-h-screen bg-black flex items-center justify-center text-white text-xl">Chargement des détails...</div>;
+        return <div className="detail-page__loading">Chargement des détails...</div>;
     }
 
     if (error || !media) {
-        return <div className="min-h-screen bg-black text-white p-10 text-red-500">Erreur : {error || 'Média non trouvé.'}</div>;
+        return <div className="detail-page__error">Erreur : {error || 'Média non trouvé.'}</div>;
     }
 
     const currentSeason = media.seasons ? media.seasons.find(s => s.number === selectedSeason) : null;
@@ -86,63 +83,63 @@ const DetailPage = () => {
     };
 
     return (
-        <div className="bg-gray-900 text-white min-h-screen">
+        <div className="detail-page">
             <Header />
 
-            {/* SECTION BANNIÈRE / LECTEUR - DESIGN OPTIMISÉ */}
-            <section className={`relative w-full ${showPlayer ? 'h-auto' : 'h-[90vh] md:h-[calc(100vh-64px)]'}`}>
+            {/* Hero Section / Video Player */}
+            <section className={`detail-page__hero ${showPlayer ? 'with-player' : ''}`}>
 
-                {/* 1. Lecteur Vidéo */}
+                {/* Video Player */}
                 {showPlayer && hasActiveSubscription ? (
-                    <div className="w-full aspect-video bg-black">
-                        {/* Assurez-vous que votre Header est bien fixé en haut pour ne pas gêner */}
-                        <VideoPlayer options={videoJsOptions} onReady={() => { /* Logique */ }} />
+                    <div className="detail-page__video-container">
+                        <VideoPlayer options={videoJsOptions} onReady={() => { /* Logic */ }} />
                     </div>
                 ) : (
-                    // 2. Bannière de Détail (Plus immersive)
+                    // Banner
                     <div
-                        className="h-full bg-cover bg-top flex items-end"
+                        className="detail-page__banner"
                         style={{ backgroundImage: `url(${media.posterUrl})` }}
                     >
-                        {/* Gradient plus prononcé pour la lisibilité du texte */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
+                        {/* Gradient Overlay */}
+                        <div className="detail-page__banner-gradient"></div>
 
-                        <div className="relative z-10 max-w-5xl p-6 md:p-12 lg:p-20">
-                            <h1 className="text-5xl md:text-8xl font-black mb-4 drop-shadow-2xl leading-tight">
+                        <div className="detail-page__banner-content">
+                            <h1 className="detail-page__title">
                                 {media.title}
                             </h1>
 
-                            {/* Informations clés (Style plus NETFLIX/PRIME) */}
-                            <div className="flex items-center space-x-6 text-xl mb-6 font-semibold">
-                                <span className="text-green-500 text-2xl font-bold">{media.rating || 'N/A'} <FaStar className="inline ml-1 text-yellow-400 text-base" /></span>
-                                <span className="text-gray-400">{media.releaseYear || 'N/A'}</span>
-                                <span className="text-gray-400 hidden sm:block border border-gray-500 px-2 rounded-md text-sm">{media.duration || 'N/A'}</span>
-                                <span className="text-gray-400 hidden lg:block">{media.genre || 'N/A'}</span>
+                            {/* Metadata */}
+                            <div className="detail-page__meta">
+                                <span className="detail-page__rating">
+                                    {media.rating || 'N/A'} <FaStar />
+                                </span>
+                                <span className="detail-page__year">{media.releaseYear || 'N/A'}</span>
+                                <span className="detail-page__age-rating">{media.duration || 'N/A'}</span>
+                                <span className="detail-page__genre">{media.genre || 'N/A'}</span>
                             </div>
 
-                            <p className="max-w-3xl text-gray-200 text-lg md:text-xl mb-8">
+                            <p className="detail-page__description">
                                 {media.description}
                             </p>
 
-                            {/* Actions (Boutons) */}
-                            <div className="flex space-x-4">
+                            {/* Action Buttons */}
+                            <div className="detail-page__actions">
                                 {hasActiveSubscription ? (
                                     <button
                                         onClick={() => setShowPlayer(true)}
-                                        className="flex items-center bg-red-600 hover:bg-red-700 text-white px-8 py-3 text-xl font-bold rounded-full shadow-lg transition duration-300 transform hover:scale-105"
+                                        className="detail-page__btn detail-page__btn--play"
                                     >
-                                        <FaPlay className="mr-3 text-xl" /> Lire le média
+                                        <FaPlay /> Lire le média
                                     </button>
                                 ) : (
                                     <button
                                         onClick={() => !isAuthenticated ? window.location.href = '/login' : console.log("Afficher modal Abonnement")}
-                                        className="flex items-center bg-gray-700 hover:bg-gray-600 text-white px-8 py-3 text-xl font-bold rounded-full transition duration-300"
+                                        className="detail-page__btn detail-page__btn--subscribe"
                                     >
-                                        <FaInfoCircle className="mr-3 text-xl" /> S'abonner pour regarder
+                                        <FaInfoCircle /> S'abonner pour regarder
                                     </button>
                                 )}
-                                {/* Bouton "Ajouter à ma liste" (facultatif) */}
-                                <button className="border-2 border-gray-600 text-white px-6 py-3 text-xl font-semibold rounded-full hover:bg-gray-700 transition duration-300 hidden md:flex items-center">
+                                <button className="detail-page__btn detail-page__btn--list">
                                     + Ma Liste
                                 </button>
                             </div>
@@ -151,55 +148,52 @@ const DetailPage = () => {
                 )}
             </section>
 
-            {/* SECTION DES MÉTA-DONNÉES ET ÉPISODES (SI C'EST UNE SÉRIE) - DESIGN OPTIMISÉ */}
-            <main className={`p-6 md:p-12 lg:p-20 ${showPlayer ? 'mt-0' : '-mt-20'}`}>
+            {/* Content Section */}
+            <main className={`detail-page__content ${showPlayer ? 'with-player' : 'no-player'}`}>
 
-                {/* Résumé détaillé */}
-                <div className='max-w-5xl mb-10'>
-                    <h2 className="text-3xl font-bold mb-4">Synopsis détaillé</h2>
-                    <p className="text-gray-300 text-lg">{media.longDescription || media.description}</p>
+                {/* Synopsis */}
+                <div className="detail-page__synopsis">
+                    <h2 className="detail-page__synopsis-title">Synopsis détaillé</h2>
+                    <p className="detail-page__synopsis-text">{media.longDescription || media.description}</p>
                 </div>
 
+                <h2 className="detail-page__info-title">Informations principales</h2>
 
-                <h2 className="text-3xl font-bold mb-6">Informations principales</h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-gray-300 border-t border-gray-700 pt-6">
-
-                    {/* Colonne 1 : Infos Clés */}
-                    <div className="flex flex-col space-y-4">
-                        <div className="flex items-center">
-                            <MdOutlineLocalMovies className="text-red-500 mr-3 text-xl" />
-                            <p><strong className="text-white">Genres :</strong> {media.genre}</p>
+                <div className="detail-page__info-grid">
+                    {/* Column 1: Key Info */}
+                    <div className="detail-page__info-item">
+                        <div className="detail-page__info-row">
+                            <MdOutlineLocalMovies className="detail-page__info-icon" />
+                            <p><strong className="detail-page__info-label">Genres :</strong> {media.genre}</p>
                         </div>
-                        <div className="flex items-center">
-                            <FaCalendarAlt className="text-red-500 mr-3 text-xl" />
-                            <p><strong className="text-white">Année de sortie :</strong> {media.releaseYear}</p>
+                        <div className="detail-page__info-row">
+                            <FaCalendarAlt className="detail-page__info-icon" />
+                            <p><strong className="detail-page__info-label">Année de sortie :</strong> {media.releaseYear}</p>
                         </div>
-                        <div className="flex items-center">
-                            <FaClock className="text-red-500 mr-3 text-xl" />
-                            <p><strong className="text-white">Durée :</strong> {media.duration}</p>
+                        <div className="detail-page__info-row">
+                            <FaClock className="detail-page__info-icon" />
+                            <p><strong className="detail-page__info-label">Durée :</strong> {media.duration}</p>
                         </div>
                     </div>
 
-                    {/* Colonne 2 : Acteurs */}
-                    <div className="md:col-span-2">
-                        <div className="flex items-start">
-                            <MdOutlinePeopleAlt className="text-red-500 mr-3 text-xl mt-1" />
-                            <p><strong className="text-white block">Distribution :</strong> {media.actors}</p>
+                    {/* Column 2: Actors */}
+                    <div className="detail-page__info-item">
+                        <div className="detail-page__info-row">
+                            <MdOutlinePeopleAlt className="detail-page__info-icon" />
+                            <p><strong className="detail-page__info-label">Distribution :</strong> {media.actors}</p>
                         </div>
                     </div>
                 </div>
 
-                {/* Gestion des Saisons et Épisodes (pour les séries) - DESIGN OPTIMISÉ */}
+                {/* Episodes Section */}
                 {media.isSeries && currentSeason && (
-                    <div className="mt-12">
-                        <div className="flex justify-between items-center mb-6 border-b border-gray-700 pb-4">
-                            <h3 className="text-3xl text-white font-bold">Épisodes</h3>
-                            {/* Sélecteur de Saison (Plus Stylé) */}
+                    <div className="detail-page__episodes">
+                        <div className="detail-page__episodes-header">
+                            <h3 className="detail-page__episodes-title">Épisodes</h3>
                             <select
                                 value={selectedSeason}
                                 onChange={(e) => setSelectedSeason(Number(e.target.value))}
-                                className="bg-gray-800 text-white p-3 rounded-lg cursor-pointer border-2 border-gray-700 hover:border-red-600 transition"
+                                className="detail-page__season-select"
                             >
                                 {media.seasons.map(s => (
                                     <option key={s.number} value={s.number}>Saison {s.number}</option>
@@ -207,35 +201,33 @@ const DetailPage = () => {
                             </select>
                         </div>
 
-                        {/* Liste des Épisodes (Mieux Formatée) */}
-                        <ul className="space-y-3">
+                        {/* Episode List */}
+                        <ul className="detail-page__episode-list">
                             {currentSeason.episodes.map((episode, index) => (
                                 <li
                                     key={episode.id}
-                                    className="p-4 bg-gray-800 hover:bg-gray-700/80 rounded-xl flex flex-col md:flex-row items-start md:items-center cursor-pointer transition duration-300"
-                                    onClick={() => { /* Optionnel: Mettre à jour l'épisode à lire */ }}
+                                    className="detail-page__episode"
+                                    onClick={() => { /* Update episode to play */ }}
                                 >
-                                    {/* Vignette (Placeholder pour une vignette d'épisode) */}
-                                    <div className="w-full md:w-48 aspect-video bg-gray-900 rounded-lg mr-4 flex items-center justify-center text-gray-500 flex-shrink-0 mb-3 md:mb-0">
-
+                                    {/* Thumbnail */}
+                                    <div className="detail-page__episode-thumbnail">
                                     </div>
 
-                                    <div className="flex-grow">
-                                        <p className="text-white font-bold text-lg mb-1">{index + 1}. {episode.title}</p>
-                                        <p className="text-sm text-gray-400 mb-2">{episode.synopsis}</p>
-                                        <span className="text-xs text-red-400 font-medium border border-red-400 px-2 py-1 rounded-full">{episode.duration}</span>
+                                    <div className="detail-page__episode-info">
+                                        <p className="detail-page__episode-title">{index + 1}. {episode.title}</p>
+                                        <p className="detail-page__episode-synopsis">{episode.synopsis}</p>
+                                        <span className="detail-page__episode-duration">{episode.duration}</span>
                                     </div>
 
-                                    {/* Bouton de Lecture d'Épisode */}
-                                    <button onClick={() => setShowPlayer(true)} className="text-red-600 hover:text-red-500 transition mt-3 md:mt-0 md:ml-4 flex-shrink-0">
-                                        <FaPlay className='text-3xl' />
+                                    {/* Play Button */}
+                                    <button onClick={() => setShowPlayer(true)} className="detail-page__episode-play">
+                                        <FaPlay />
                                     </button>
                                 </li>
                             ))}
                         </ul>
                     </div>
                 )}
-                {/* 💡 Vous pouvez ajouter ici la section "Contenu similaire" */}
             </main>
 
             <Footer />
