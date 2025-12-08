@@ -6,40 +6,55 @@ import DetailPage from './pages/DetailPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import SearchPage from './pages/SearchPage';
-// Le ProtectedRoute est toujours là, mais on ne l'utilise plus pour les pages de design
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import { MediaProvider } from './contexts/MediaContext';
+import { AdminProvider } from './contexts/AdminContext';
+import AdminRoute from './components/AdminRoute';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminLayout from './components/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import ContentManagement from './pages/admin/ContentManagement';
+import UserManagement from './pages/admin/UserManagement';
 import './App.css';
 
 function App() {
   return (
     <AuthProvider>
       <MediaProvider>
-        <Router>
-          <div className="App">
-            <Routes>
+        <AdminProvider>
+          <Router>
+            <div className="App">
+              <Routes>
 
-              {/* ROUTES PUBLIQUES (Accessibles à tous pour le design) */}
-              <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-              <Route path="/search" element={<SearchPage />} />
+                {/* PUBLIC ROUTES */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/search" element={<SearchPage />} />
+                <Route path="/media/:id" element={<DetailPage />} />
 
-              {/* 💡 CORRECTION : DETAILPAGE EST MAINTENANT PUBLIQUE POUR FACILITER LE DÉVELOPPEMENT */}
-              <Route path="/media/:id" element={<DetailPage />} />
+                {/* ADMIN ROUTES */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin" element={<AdminRoute />}>
+                  <Route element={<AdminLayout />}>
+                    <Route path="dashboard" element={<AdminDashboard />} />
+                    <Route path="content" element={<ContentManagement />} />
+                    <Route path="users" element={<UserManagement />} />
+                  </Route>
+                </Route>
 
-              {/* ROUTE PROTÉGÉE (Laisser ici pour la future logique) */}
-              {/* Vous pouvez ajouter ici la route vers le profil, etc., une fois que l'API est connectée. */}
-              <Route element={<ProtectedRoute />}>
-                {/* Exemple : <Route path="/profile" element={<ProfilePage />} /> */}
-              </Route>
+                {/* PROTECTED ROUTES */}
+                <Route element={<ProtectedRoute />}>
+                  {/* Example: <Route path="/profile" element={<ProfilePage />} /> */}
+                </Route>
 
-              {/* Route 404 de secours */}
-              <Route path="*" element={<div>404 Page non trouvée</div>} />
-            </Routes>
-          </div>
-        </Router>
+                {/* 404 ROUTE */}
+                <Route path="*" element={<div>404 Page non trouvée</div>} />
+              </Routes>
+            </div>
+          </Router>
+        </AdminProvider>
       </MediaProvider>
     </AuthProvider>
   );
